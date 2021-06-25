@@ -4,8 +4,13 @@
       <b-card class="col-md-8 mt-5 mx-auto">
         <b-card-header>
           <b-row>
-            <b-col sm="1"
-              ><b-button squared variant="primary">1</b-button></b-col
+            <b-button
+              class="col-sm-1 ms-1 mt-1"
+              squared
+              variant="primary"
+              v-for="(value, key) in triviaQuestions"
+              :key="key"
+              >{{ key + 1 }}</b-button
             >
           </b-row>
         </b-card-header>
@@ -34,5 +39,17 @@
 </template>
 
 <script>
-export default {};
+import Questions from "../services/questions";
+export default {
+  created() {
+    Questions.list().then(
+      (response) => (this.triviaQuestions = response.data.results)
+    );
+  },
+  data() {
+    return {
+      triviaQuestions: [],
+    };
+  },
+};
 </script>
