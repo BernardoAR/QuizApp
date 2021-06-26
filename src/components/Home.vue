@@ -50,6 +50,14 @@ export default {
       this.question = he.decode(this.triviaQuestions[id].question);
       this.$refs.answers.cleanValues();
       this.changeAnswers(id);
+      this.changeDisabled(id);
+    },
+    changeDisabled(id) {
+      if (this.answered[id] != null) {
+        this.$refs.answers.correct = this.answered[id].correct;
+        this.$refs.answers.incorrect = this.answered[id].incorrect;
+        this.$refs.answers.disabled = true;
+      }
     },
     changeAnswers(id) {
       this.$refs.answers.answers = [
@@ -59,10 +67,12 @@ export default {
         .sort();
     },
     checkAnswer() {
-      this.answered[this.id] = this.$refs.answers.checkAnswer(
-        this.triviaQuestions[this.id].correct_answer
-      );
-      this.$refs.header.answered = this.answered;
+      if (this.answered[this.id] == null) {
+        this.answered[this.id] = this.$refs.answers.checkAnswer(
+          this.triviaQuestions[this.id].correct_answer
+        );
+        this.$refs.header.answered[this.id] = this.answered[this.id];
+      }
     },
   },
 

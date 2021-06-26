@@ -30,6 +30,7 @@ export default {
       this.indexSelected = null;
       this.correct = null;
       this.incorrect = null;
+      this.disabled = false;
     },
     checkAnswer(correct) {
       let isCorrect = false;
@@ -43,7 +44,7 @@ export default {
       return {
         isCorrect: isCorrect,
         correct: this.correct,
-        incorrect: this.correct,
+        incorrect: this.incorrect,
       };
     },
     changeColor(key) {
