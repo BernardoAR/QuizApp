@@ -6,7 +6,16 @@
         <b-card-body class="text-center">
           <b-card-title>{{ question }}</b-card-title>
           <Answers ref="answers"></Answers>
-          <b-button class="mt-3" variant="primary" pill>Answer</b-button>
+          <b-button class="mt-3" variant="primary" @click="checkAnswer" pill
+            >Answer</b-button
+          >
+          <b-button
+            class="ms-3 mt-3"
+            variant="primary"
+            @click="checkAnswer"
+            pill
+            >Finish Quiz</b-button
+          >
         </b-card-body>
       </b-card>
     </b-container>
@@ -31,7 +40,9 @@ export default {
   },
   methods: {
     changePage(id) {
+      this.id = id;
       this.question = he.decode(this.triviaQuestions[id].question);
+      this.$refs.answers.indexSelected = null;
       this.changeAnswers(id);
     },
     changeAnswers(id) {
@@ -41,10 +52,16 @@ export default {
         .concat(this.triviaQuestions[id].correct_answer)
         .sort();
     },
+    checkAnswer() {
+      this.$refs.answers.checkAnswer(
+        this.triviaQuestions[this.id].correct_answer
+      );
+    },
   },
+
   data() {
     return {
-      selectedQuestion: 0,
+      id: 0,
       length: 0,
       question: "",
       triviaQuestions: [],

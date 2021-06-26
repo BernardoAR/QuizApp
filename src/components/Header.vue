@@ -2,10 +2,10 @@
   <b-card-header>
     <b-row>
       <b-button
-        class="col-sm-1 ms-1 mt-1"
+        class="col-sm-1 ms-1 mt-1 nowrap"
         squared
         :variant="isSelected(key)"
-        @click="select(key)"
+        @click="selectPage(key)"
         v-for="(number, key) in length"
         :key="number"
         >{{ number }}</b-button
@@ -27,7 +27,7 @@ export default {
       if (this.indexSelected == key) return "primary";
       else return "outline-primary";
     },
-    select(key) {
+    selectPage(key) {
       this.indexSelected = key;
       this.$emit("changePage", key);
     },
@@ -35,5 +35,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.nowrap {
+  white-space: nowrap;
+}
 </style>

@@ -3,7 +3,8 @@
     <b-button
       squared
       class="btn-block"
-      :variant="isSelected(key)"
+      :disabled="disabled"
+      :variant="changeColor(key)"
       v-for="(value, key) in answers"
       :key="value"
       :state="true"
@@ -17,18 +18,32 @@
 export default {
   data() {
     return {
-      key: [],
+      disabled: false,
       indexSelected: null,
       correct: null,
       incorrect: null,
-      selected: "",
       answers: [],
     };
   },
   methods: {
-    isSelected(key) {
+    cleanValues(){
+      this.indexSelected = null;
+      this.correct = null;
+      this.incorrect = null;
+    },
+    checkAnswer(correct) {
+      if (this.answers[this.indexSelected] == correct)
+        this.correct = this.indexSelected;
+      else {
+        this.correct = this.answers.indexOf(correct);
+        this.incorrect = this.indexSelected;
+      }
+    },
+    changeColor(key) {
+      if (this.incorrect == key) return "danger";
+      if (this.correct == key) return "success";
       if (this.indexSelected == key) return "primary";
-      else return "outline-primary";
+      return "outline-primary";
     },
     select(key) {
       this.indexSelected = key;
