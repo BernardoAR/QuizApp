@@ -71,8 +71,15 @@ export default {
         this.answered[this.id] = this.$refs.answers.checkAnswer(
           this.triviaQuestions[this.id].correct_answer
         );
-        this.$refs.header.answered[this.id] = this.answered[this.id];
+        this.changeQuestion();
       }
+    },
+    changeQuestion() {
+      setTimeout(() => {
+        this.$refs.header.answered[this.id] = this.answered[this.id];
+        this.changePage(this.id + 1);
+        this.$refs.header.selectPage(this.id);
+      }, 1000);
     },
   },
 
