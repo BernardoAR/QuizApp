@@ -2,7 +2,12 @@
   <div>
     <b-container>
       <b-card class="col-md-8 mt-5 mx-auto">
-        <Header :length="length" @changePage="changePage" ref="length"></Header>
+        <Header
+          :length="length"
+          :answered="answered"
+          @changePage="changePage"
+          ref="header"
+        ></Header>
         <b-card-body class="text-center">
           <b-card-title>{{ question }}</b-card-title>
           <Answers ref="answers"></Answers>
@@ -38,11 +43,12 @@ export default {
       this.changeAnswers(0);
     });
   },
+
   methods: {
     changePage(id) {
       this.id = id;
       this.question = he.decode(this.triviaQuestions[id].question);
-      this.$refs.answers.indexSelected = null;
+      this.$refs.answers.cleanValues();
       this.changeAnswers(id);
     },
     changeAnswers(id) {
@@ -53,9 +59,10 @@ export default {
         .sort();
     },
     checkAnswer() {
-      this.$refs.answers.checkAnswer(
+      this.answered[this.id] = this.$refs.answers.checkAnswer(
         this.triviaQuestions[this.id].correct_answer
       );
+      this.$refs.header.answered = this.answered;
     },
   },
 
@@ -65,6 +72,7 @@ export default {
       length: 0,
       question: "",
       triviaQuestions: [],
+      answered: {},
     };
   },
 };

@@ -19,13 +19,18 @@ export default {
   props: ["length"],
   data() {
     return {
+      answered: [],
       indexSelected: 0,
     };
   },
   methods: {
     isSelected(key) {
-      if (this.indexSelected == key) return "primary";
-      else return "outline-primary";
+      if (this.answered[key] == null) {
+        if (this.indexSelected == key) return "primary";
+        else return "outline-primary";
+      }
+      if (this.answered[key].isCorrect) return "success";
+      if (!this.answered[key].isCorrect) return "danger";
     },
     selectPage(key) {
       this.indexSelected = key;

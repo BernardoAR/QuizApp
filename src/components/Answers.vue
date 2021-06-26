@@ -26,18 +26,25 @@ export default {
     };
   },
   methods: {
-    cleanValues(){
+    cleanValues() {
       this.indexSelected = null;
       this.correct = null;
       this.incorrect = null;
     },
     checkAnswer(correct) {
-      if (this.answers[this.indexSelected] == correct)
+      let isCorrect = false;
+      if (this.answers[this.indexSelected] == correct) {
+        isCorrect = true;
         this.correct = this.indexSelected;
-      else {
+      } else {
         this.correct = this.answers.indexOf(correct);
         this.incorrect = this.indexSelected;
       }
+      return {
+        isCorrect: isCorrect,
+        correct: this.correct,
+        incorrect: this.correct,
+      };
     },
     changeColor(key) {
       if (this.incorrect == key) return "danger";
