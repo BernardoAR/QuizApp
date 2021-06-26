@@ -4,10 +4,10 @@
       <b-button
         class="col-sm-1 ms-1 mt-1"
         squared
-        variant="outline-primary"
-        v-for="number in length"
+        :variant="isSelected(key)"
+        @click="select(key)"
+        v-for="(number, key) in length"
         :key="number"
-        @click="$emit('changePage', number)"
         >{{ number }}</b-button
       >
     </b-row>
@@ -17,6 +17,21 @@
 <script>
 export default {
   props: ["length"],
+  data() {
+    return {
+      indexSelected: 0,
+    };
+  },
+  methods: {
+    isSelected(key) {
+      if (this.indexSelected == key) return "primary";
+      else return "outline-primary";
+    },
+    select(key) {
+      this.indexSelected = key;
+      this.$emit("changePage", key);
+    },
+  },
 };
 </script>
 

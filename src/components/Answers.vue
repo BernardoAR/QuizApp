@@ -6,6 +6,7 @@
       :variant="isSelected(key)"
       v-for="(value, key) in answers"
       :key="value"
+      :state="true"
       @click="select(key)"
       >{{ value }}</b-button
     >
@@ -14,12 +15,14 @@
 
 <script>
 export default {
-  props: ["answers"],
   data() {
     return {
       key: [],
       indexSelected: null,
+      correct: null,
+      incorrect: null,
       selected: "",
+      answers: [],
     };
   },
   methods: {
