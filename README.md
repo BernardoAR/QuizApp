@@ -1,24 +1,20 @@
-# quizsite
+# QuizApp
 
-## Project setup
-```
-npm install
-```
+Welcome to my repository of QuizApp
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Description
 
-### Compiles and minifies for production
-```
-npm run build
-```
+**QuizApp** is a simple quiz app, where the user receive random questions to answer, with multiple values to choose.
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Made with
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This simple app was made with
+
+- VueJS;
+- Data from API (http://opentdb.com/);
+
+## How to use
+
+Just go to the folder of repository and use:
+
+`npm run serve`
