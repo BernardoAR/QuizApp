@@ -2,26 +2,31 @@
   <div>
     <b-container>
       <b-card class="col-md-8 mt-5 mx-auto">
-        <Header
-          :length="length"
-          :answered="answered"
-          @changePage="changePage"
-          ref="header"
-        ></Header>
-        <b-card-body class="text-center">
-          <b-card-title>{{ question }}</b-card-title>
-          <Answers ref="answers"></Answers>
-          <b-button class="mt-3" variant="primary" @click="checkAnswer" pill
-            >Answer</b-button
-          >
-          <b-button
-            class="ms-3 mt-3"
-            variant="primary"
-            @click="checkAnswer"
-            pill
-            >Finish Quiz</b-button
-          >
-        </b-card-body>
+        <div v-if="finishedQuiz">
+          <FinalResult ref="finalResult"></FinalResult>
+        </div>
+        <div v-else>
+          <Header
+            :length="length"
+            :answered="answered"
+            @changePage="changePage"
+            ref="header"
+          ></Header>
+          <b-card-body class="text-center">
+            <b-card-title>{{ question }}</b-card-title>
+            <Answers ref="answers"></Answers>
+            <b-button class="mt-3" variant="primary" @click="checkAnswer" pill
+              >Answer</b-button
+            >
+            <b-button
+              class="ms-3 mt-3"
+              variant="primary"
+              @click="finishQuiz"
+              pill
+              >Finish Quiz</b-button
+            >
+          </b-card-body>
+        </div>
       </b-card>
     </b-container>
   </div>
@@ -32,8 +37,9 @@ import Questions from "../services/questions";
 import Header from "./Header.vue";
 import Answers from "./Answers.vue";
 import * as he from "he";
+import FinalResult from "./FinalResult.vue";
 export default {
-  components: { Header, Answers },
+  components: { Header, Answers, FinalResult },
   created() {
     Questions.list().then((response) => {
       let results = response.data.results;
@@ -45,6 +51,13 @@ export default {
   },
 
   methods: {
+    finishQuiz() {
+      this.finishedQuiz = true;
+      this.$nextTick(function () {
+        this.$refs.finalResult.length = this.length;
+        this.$refs.finalResult.correctAnswers = this.correctAnswers;
+      });
+    },
     changePage(id) {
       this.id = id;
       this.question = he.decode(this.triviaQuestions[id].question);
@@ -71,15 +84,19 @@ export default {
         this.answered[this.id] = this.$refs.answers.checkAnswer(
           this.triviaQuestions[this.id].correct_answer
         );
+        this.incrementCorrectAnswer();
         this.changeQuestion();
       }
+    },
+    incrementCorrectAnswer() {
+      if (this.answered[this.id].isCorrect) this.correctAnswers++;
     },
     changeQuestion() {
       setTimeout(() => {
         this.$refs.header.answered[this.id] = this.answered[this.id];
         this.changePage(this.id + 1);
         this.$refs.header.selectPage(this.id);
-      }, 1000);
+      }, 500);
     },
   },
 
@@ -87,6 +104,8 @@ export default {
     return {
       id: 0,
       length: 0,
+      correctAnswers: 0,
+      finishedQuiz: false,
       question: "",
       triviaQuestions: [],
       answered: {},
